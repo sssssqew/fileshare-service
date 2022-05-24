@@ -6,4 +6,10 @@ file sharing with socket.io and node.js for multiple upload
 ![멀티플 2](https://user-images.githubusercontent.com/9676553/170033301-56643df8-e41b-4980-9a74-c67992f5e053.png)
 
 
+```
+npm install
+npm start
+```
+
+
 
