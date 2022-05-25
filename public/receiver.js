@@ -22,15 +22,17 @@
   socket.on('fs-meta', function(metadata){ // 5. 송신자로부터 전달받은 메타데이터를 sharedFiles 배열에 담기 
     console.log('전달받은 파일 메타데이터', metadata)
 
-    sharedFiles[metadata.fileId] = {}
-    sharedFiles[metadata.fileId].metadata = metadata
-    sharedFiles[metadata.fileId].transmited = 0
-    sharedFiles[metadata.fileId].buffer = []
+    const { fileId, fileName } = metadata
 
-    const { progressNode, progressbarNode } = displayFileshareInfo(metadata.fileName)
+    sharedFiles[fileId] = {}
+    sharedFiles[fileId].metadata = metadata
+    sharedFiles[fileId].transmited = 0
+    sharedFiles[fileId].buffer = []
 
-    sharedFiles[metadata.fileId].progressNode = progressNode
-    sharedFiles[metadata.fileId].progressbarNode = progressbarNode
+    const { progressNode, progressbarNode } = displayFileshareInfo(fileName)
+
+    sharedFiles[fileId].progressNode = progressNode
+    sharedFiles[fileId].progressbarNode = progressbarNode
 
     socket.emit('fs-start', { roomID }) // 6. sender 에게 파일 청크 요청하기
   })
