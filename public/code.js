@@ -11,10 +11,7 @@
       <span>${roomInfo['roomID']}</span>
     `
     displayRoomInformation(roomInfo)
-
-    socket.emit('sender-join', { // 1. 소켓에 sender ID 등록
-      roomInfo
-    })
+    socket.emit('sender-join', { roomInfo }) // 1. 소켓에 sender ID 등록
   })
   socket.on('init', function(uid){ // 3. receiver ID 저장 및 파일 업로드 화면 보여주기
     console.log("Receiver ID: ", uid)
@@ -23,11 +20,8 @@
   })
   document.querySelector('#file-input').addEventListener('change', function(e){ // 파일 업로드시 
     let files = e.target.files
-
-    for(let file of files){
-      if(!file) return 
-      readUploadedFile(file, shareFile)
-    }
+    if(files.length === 0) return 
+    Array.from(files).forEach(file => readUploadedFile(file, shareFile))
   })
   function shareFile(metadata, buffer, { progressNode, progressbarNode }){
     console.log('업로드 완료', metadata)
@@ -47,7 +41,7 @@
       if(chunk.length != 0){
         socket.emit('file-raw', { // 8. receiver 에게 청크 전달하기 (어느 파일의 청크인지 구분하기 위하여 File ID 값도 함께 전달)
           roomInfo,
-          buffer: { fileId, chunk}
+          buffer: { fileId, chunk }
         })
       }
     })
