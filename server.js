@@ -21,6 +21,7 @@ io.on('connection', function(socket){
   })
   socket.on('file-meta', function(data){
     console.log('data: ', data)
+    // TODO: Sender 에게 접속한 모든 Receiver 에게 메타데이터 전송 
     socket.to(data.uid).emit('fs-meta', data.metadata) // receiver 로 파일 메타데이터 전송
   })
   socket.on('fs-start', function(data){ // 수신자로부터 다음 chunk 를 보내줄것을 송신자에게 요청

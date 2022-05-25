@@ -17,7 +17,7 @@
   })
   socket.on('init', function(uid){ // 3. receiver ID 저장 및 파일 업로드 화면 보여주기
     console.log("Receiver ID: ", uid)
-    receiverID = uid
+    receiverID = uid // TODO: receiver ID 목록 저장하기
     document.querySelector('.join-screen').classList.remove('active')
     document.querySelector('.fs-screen').classList.add('active')
   })
@@ -57,7 +57,7 @@
   function shareFile(metadata, buffer, progress_node, progressbar_node){
     console.log('업로드 완료', metadata)
     socket.emit('file-meta', { // 4. receiver 에게 파일 메타데이터 전송하기
-      uid: receiverID,
+      uid: receiverID, // TODO: Receiver ID 목록 전달하기
       metadata: metadata,
     })
    
