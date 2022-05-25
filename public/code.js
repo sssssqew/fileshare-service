@@ -14,8 +14,8 @@
       <b>Room ID</b>
       <span>${roomInfo['roomID']}</span>
     `
-    const roomTitle = document.querySelector('.files-list .title') // Room ID 표시
-    roomTitle.innerText = `Shared files: ${roomInfo['roomName']} (${roomInfo['roomID']})` 
+    const roomTitle = document.querySelector('.title') // Room ID 표시
+    roomTitle.innerText = `Room: ${roomInfo['roomName']} (${roomInfo['roomID']})` 
 
     socket.emit('sender-join', { // 1. 소켓에 sender ID 등록
       roomInfo

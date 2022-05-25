@@ -22,8 +22,8 @@
   })
   socket.on('receive-roomInfo', function(roomInfo){
     roomInfo = roomInfo
-    const roomTitle = document.querySelector('.files-list .title') // Room ID 표시
-    roomTitle.innerText = `Shared files: ${roomInfo['roomName']} (${roomInfo['roomID']})`
+    const roomTitle = document.querySelector('.title') // Room ID 표시
+    roomTitle.innerText = `Room: ${roomInfo['roomName']} (${roomInfo['roomID']})`
   })
 
   let sharedFiles = [] 
@@ -37,12 +37,13 @@
 
     let el = document.createElement('div') // 화면에 sender가 공유한 파일정보 표시하기 
     el.classList.add('item')
+    // metadata.fileId : 파일 고유의 UUID
     el.innerHTML = `
       <div class="progress">0%</div>
       <div class="progress-bar">
         <div class="bar"></div>
       </div>
-      <div class="filename">${metadata.filename} (File ID - ${metadata.fileId})</div>
+      <div class="filename">${metadata.filename}</div>
     `
     document.querySelector('.files-list').appendChild(el)
     sharedFiles[metadata.fileId].progress_node = el.querySelector('.progress')
