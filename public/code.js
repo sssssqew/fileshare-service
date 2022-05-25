@@ -1,18 +1,24 @@
 (function(){
   let receiverID
+  let roomInfo = {}
   const socket = io()
 
   function generateID(){
     return `${Math.trunc(Math.random()*999)}-${Math.trunc(Math.random()*999)}-${Math.trunc(Math.random()*999)}`
   }
   document.querySelector('#sender-start-con-btn').addEventListener('click', function(){
-    let joinID = generateID()
+    roomInfo['roomID'] = generateID()
+    roomInfo['roomName'] = document.querySelector('.form-input .room-name').value 
+    document.querySelector('.form-input .room-name').style.display = 'none'
     document.querySelector('#join-id').innerHTML = `
       <b>Room ID</b>
-      <span>${joinID}</span>
+      <span>${roomInfo['roomID']}</span>
     `
+    const roomTitle = document.querySelector('.files-list .title') // Room ID 표시
+    roomTitle.innerText = `Shared files: ${roomInfo['roomName']} (${roomInfo['roomID']})` 
+
     socket.emit('sender-join', { // 1. 소켓에 sender ID 등록
-      uid: joinID
+      roomInfo
     })
   })
   socket.on('init', function(uid){ // 3. receiver ID 저장 및 파일 업로드 화면 보여주기
@@ -20,6 +26,11 @@
     receiverID = uid // TODO: receiver ID 목록 저장하기
     document.querySelector('.join-screen').classList.remove('active')
     document.querySelector('.fs-screen').classList.add('active')
+
+    socket.emit('room-info', {
+      roomInfo
+    }) // 전체 수신자에게 room info 전송
+    
   })
   document.querySelector('#file-input').addEventListener('change', function(e){ // 파일 업로드시 
     let files = e.target.files
@@ -57,12 +68,12 @@
   function shareFile(metadata, buffer, progress_node, progressbar_node){
     console.log('업로드 완료', metadata)
     socket.emit('file-meta', { // 4. receiver 에게 파일 메타데이터 전송하기
-      uid: receiverID, // TODO: Receiver ID 목록 전달하기
+      roomInfo, // TODO: Receiver ID 목록 전달하기
       metadata: metadata,
     })
    
     // 파일전송이 진행중인 경우 반복적으로 실행되면서 계속 파일 청크를 전송함
-    socket.on('fs-share', function(){ // 7. receiver로부터 파일 청크를 보내줄것을 요청받고 파일에서 chunk 만큼 추출하기
+    socket.on('fs-share-to-sender', function(){ // 7. receiver로부터 파일 청크를 보내줄것을 요청받고 파일에서 chunk 만큼 추출하기
       let chunk = buffer.slice(0, metadata.buffer_size) // 파일에서 1024 바이트씩 끊어서 추출함
       // console.log(metadata.filename, ': ', chunk)
       buffer = buffer.slice(metadata.buffer_size, buffer.length) // 파일에서 청크를 제외한 나머지 데이터를 다시 buffer 로 설정함
@@ -72,7 +83,7 @@
       // console.log('전송 진행률: ', progress)
       if(chunk.length != 0){
         socket.emit('file-raw', { // 8. receiver 에게 청크 전달하기 (어느 파일의 청크인지 구분하기 위하여 File ID 값도 함께 전달)
-          uid: receiverID,
+          roomInfo,
           buffer: {fid: metadata.fileId, chunk}
         })
       }

@@ -1,21 +1,29 @@
 (function(){
-  let senderID
+  let roomID
+  let roomInfo
   const socket = io()
 
   function generateID(){
     return `${Math.trunc(Math.random()*999)}-${Math.trunc(Math.random()*999)}-${Math.trunc(Math.random()*999)}`
   }
   document.querySelector('#receiver-start-con-btn').addEventListener('click', function(){
-    senderID = document.querySelector('#join-id').value
-    if(senderID.length === 0) return 
+    roomID = document.querySelector('#join-id').value
+    if(roomID.length === 0) return 
 
     let joinID = generateID() 
+
     socket.emit('receiver-join', { // 2. 소켓에 receiver ID 등록
       uid: joinID,
-      sender_uid: senderID
+      roomID
     })
+
     document.querySelector('.join-screen').classList.remove('active')
     document.querySelector('.fs-screen').classList.add('active')
+  })
+  socket.on('receive-roomInfo', function(roomInfo){
+    roomInfo = roomInfo
+    const roomTitle = document.querySelector('.files-list .title') // Room ID 표시
+    roomTitle.innerText = `Shared files: ${roomInfo['roomName']} (${roomInfo['roomID']})`
   })
 
   let sharedFiles = [] 
@@ -41,7 +49,7 @@
     sharedFiles[metadata.fileId].progressbar_node = el.querySelector('.progress-bar .bar')
 
     socket.emit('fs-start', { // 6. sender 에게 파일 청크 요청하기
-      uid: senderID
+      roomID
     })
   })
   
@@ -64,7 +72,7 @@
       sharedFiles[fid] = {} // 해당 파일정보 초기화하기 
     }else{
       socket.emit('fs-start', { // 10. 현재 파일전송이 진행중인 경우 sender 에게 다음 파일청크를 보내달라고 요청하기
-        uid: senderID
+        roomID
       })
     }
   })
