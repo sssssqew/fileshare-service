@@ -4,12 +4,20 @@
 
   document.querySelector('#receiver-join-btn').addEventListener('click', function(){
     roomID = document.querySelector('#join-id').value
-    if(roomID.length === 0) return 
+    if(roomID === ''){
+      alert('Please give Room ID ...')
+      return 
+    }
 
     const joinID = generateRoomID() 
 
     socket.emit('receiver-join', { joinID, roomID }) // 2. 소켓에 receiver ID 등록
     displayFileListScreen()
+  })
+  socket.on('room-not-valid', function({ msg }){
+    alert(msg)
+    HideFileListScreen()
+    document.querySelector('#join-id').value = ''
   })
   socket.on('receive-roomInfo', function(roomInfo){
     displayRoomInformation(roomInfo)

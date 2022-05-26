@@ -14,6 +14,10 @@ function displayFileListScreen(){
   document.querySelector('.join-screen').classList.remove('active')
   document.querySelector('.fs-screen').classList.add('active')
 }
+function HideFileListScreen(){
+  document.querySelector('.fs-screen').classList.remove('active')
+  document.querySelector('.join-screen').classList.add('active')
+}
 function displayRoomId(roomId){
   document.querySelector('#join-id').innerHTML = `
     <b>Room ID</b>

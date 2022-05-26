@@ -14,8 +14,13 @@ io.on('connection', function(socket){
     socket.join(data.roomInfo['roomID']) 
   })
   socket.on('receiver-join', function(data){ // receiver join to Room
-    socket.join(data.roomID) 
-    socket.to(data.roomID).emit('init', data.joinID) // sender 에게 room Info 요청
+    if(io.sockets.adapter.rooms.get(data.roomID)){ // Room 이 존재하는 경우
+      socket.join(data.roomID) 
+      socket.to(data.roomID).emit('init', data.joinID) // sender 에게 room Info 요청
+    }else{
+      // Room 이 존재하지 않은 경우
+      socket.emit('room-not-valid', { msg: 'Room not Found !'})
+    }
   })
   socket.on('room-info', function(data){
     socket.to(data.roomInfo['roomID']).emit('receive-roomInfo', data.roomInfo) // 해당 방에 속한(Sender 제외) 모든 receiver 에게 room info 전달
