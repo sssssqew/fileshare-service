@@ -17,12 +17,11 @@ io.on('connection', function(socket){
     if(io.sockets.adapter.rooms.get(data.roomID)){ // Room 이 존재하는 경우
       socket.join(data.roomID) 
       socket.to(data.roomID).emit('init', data.joinID) // sender 에게 room Info 요청
-    }else{
-      // Room 이 존재하지 않은 경우
-      socket.emit('room-not-valid', { msg: 'Room not Found !'})
+    }else{ // Room 이 존재하지 않은 경우
+      socket.emit('room-not-valid', { msg: 'Room not Found !'}) // socket.emit 은 receiver-join 이벤트를 발송한 사람한테만 room-not-valid 이벤트를 전달함
     }
   })
-  socket.on('room-info', function(data){
+  socket.on('room-info', function(data){ // socket.to 는 해당 방에서 room-info 이벤트를 발송한 사람을 제외한 모든 사람에게 receiver-roomInfo 메세지를 전달함
     socket.to(data.roomInfo['roomID']).emit('receive-roomInfo', data.roomInfo) // 해당 방에 속한(Sender 제외) 모든 receiver 에게 room info 전달
   })
   socket.on('file-meta', function(data){ // Sender에 접속한 모든 Receiver 에게 메타데이터 전송 
