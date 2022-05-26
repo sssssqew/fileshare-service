@@ -8,6 +8,9 @@ function generateRoomID(){
 function sliceBuffer(buffer, start, end){
   return buffer.slice(start, end)
 }
+function storeRoomInfo(roomID, roomName){
+  return { roomID, roomName }
+}
 
 // DOM manipulation functions
 function displayFileListScreen(){
@@ -29,7 +32,7 @@ function displayRoomInformation(roomInfo){
   roomTitle.innerText = `Room: ${roomInfo['roomName']} (${roomInfo['roomID']})` 
 }
 function displayFileshareInfo(filename){
-  let el = document.createElement('div') 
+  const el = document.createElement('div') 
   el.classList.add('item')
   el.innerHTML = `
     <div class="progress">0%</div>
@@ -41,13 +44,17 @@ function displayFileshareInfo(filename){
   document.querySelector('.files-list').appendChild(el)
   return { progressNode: el.querySelector('.progress'), progressbarNode: el.querySelector('.progress-bar .bar') }
 }
+function updateProgress(transmited, totalSize, progressNode, progressbarNode){
+  const progress = Math.trunc(transmited / totalSize * 100) + '%'
+  progressNode.innerText = progress
+  progressbarNode.style.width = progress
+}
 
 // specific functions
 function fetchFile(reader, file, shareFile){
   const buffer = new Uint8Array(reader.result) // 0~255 사이의 숫자를 요소로 가지는 배열
   console.log(buffer)
   const progressNodes = displayFileshareInfo(file.name)
-  console.log('nodes', progressNodes)
 
   shareFile({
     fileId: uuidv4(), // File ID (UUID)
