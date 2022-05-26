@@ -20,6 +20,8 @@
     displayFileListScreen()
     socket.emit('room-info', { roomInfo }) // 전체 수신자에게 room info 전송
   })
+
+  // TODO : 파일 수신부 작성하기
   document.querySelector('#file-input').addEventListener('change', function(e){ // 파일 업로드시 
     let files = e.target.files
     if(files.length === 0) return 
@@ -33,9 +35,9 @@
    
     // 파일전송이 진행중인 경우 반복적으로 실행되면서 계속 파일 청크를 전송함
     socket.on('fs-share-to-sender', function(){ // 7.  파일에서 chunk 만큼 추출하기
-      const chunk = sliceBuffer(buffer, 0, chunkSize) 
-      buffer = sliceBuffer(buffer, chunkSize, buffer.length) // 파일에서 청크를 제외한 데이터를 다시 buffer 로 설정함  
-      updateProgress(fileSize - buffer.length, fileSize, progressNode, progressbarNode)
+      const { chunk, bufferUpdated } = getChunk(buffer, chunkSize) // 파일에서 청크를 제외한 데이터를 다시 buffer 로 설정함  
+      updateProgress(fileSize - bufferUpdated.length, fileSize, progressNode, progressbarNode)
+      buffer = bufferUpdated // 버퍼 업데이트 
       
       if(chunk.length !== 0){
         socket.emit('file-raw', { // 8. receiver 에게 청크 전달하기 (어느 파일의 청크인지 구분하기 위하여 File ID 값도 함께 전달)

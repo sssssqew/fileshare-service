@@ -8,8 +8,22 @@ function generateRoomID(){
 function sliceBuffer(buffer, start, end){
   return buffer.slice(start, end)
 }
+function getChunk(buffer, chunkSize){
+  const chunk = sliceBuffer(buffer, 0, chunkSize) 
+  const bufferUpdated = sliceBuffer(buffer, chunkSize, buffer.length)
+  return { chunk, bufferUpdated }
+}
 function storeRoomInfo(roomID, roomName){
   return { roomID, roomName }
+}
+function initializeFileInfo(metadata, progressNode, progressbarNode){
+  return {
+    metadata,
+    transmited: 0,
+    buffer: [],
+    progressNode,
+    progressbarNode
+  }
 }
 
 // DOM manipulation functions

@@ -21,20 +21,15 @@
     displayRoomInformation(roomInfo)
   })
 
+  // TODO : 파일 송신부 작성하기 
   const sharedFiles = [] 
   socket.on('fs-meta', function(metadata){ // 5. 송신자로부터 전달받은 메타데이터를 sharedFiles 배열에 담기 
     console.log('전달받은 파일 메타데이터', metadata)
 
     const { fileId, fileName } = metadata
     const { progressNode, progressbarNode } = displayFileshareInfo(fileName)
-
-    sharedFiles[fileId] = {
-      metadata,
-      transmited: 0,
-      buffer: [],
-      progressNode,
-      progressbarNode
-    }
+    sharedFiles[fileId] = initializeFileInfo(metadata, progressNode, progressbarNode)
+    
     socket.emit('fs-start', { roomID }) // 6. sender 에게 파일 청크 요청하기
   })
   
