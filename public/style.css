@@ -51,6 +51,7 @@ body{
   outline: none;
   cursor: pointer;
 }
+
 .join-screen .form #join-id b{
   color: #222;
   display: block;
@@ -69,7 +70,7 @@ body{
 .join-screen .form label{
   color: #222;
 }
-.join-screen .form input{
+.room-name{
   display: block;
   margin: 10px 0;
   width: 100%;
@@ -78,6 +79,9 @@ body{
   color: #111;
   font-size: 20px;
   padding: 10px;
+}
+.hide{
+  display: none;
 }
 .fs-screen{
   /* border: 1px solid red; */

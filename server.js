@@ -15,7 +15,7 @@ io.on('connection', function(socket){
   })
   socket.on('receiver-join', function(data){ // receiver join to Room
     socket.join(data.roomID) 
-    socket.to(data.roomID).emit('init', data.uid) // sender 에게 room Info 요청
+    socket.to(data.roomID).emit('init', data.joinID) // sender 에게 room Info 요청
   })
   socket.on('room-info', function(data){
     socket.to(data.roomInfo['roomID']).emit('receive-roomInfo', data.roomInfo) // 해당 방에 속한(Sender 제외) 모든 receiver 에게 room info 전달

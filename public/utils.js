@@ -5,9 +5,6 @@ function generateRandomNumber(n){
 function generateRoomID(){
   return `${generateRandomNumber(999)}-${generateRandomNumber(999)}-${generateRandomNumber(999)}`
 }
-function isFileTransfferDone(fileId){
-  return fileId.transmited == fileId.metadata.fileSize
-}
 function sliceBuffer(buffer, start, end){
   return buffer.slice(start, end)
 }
@@ -16,6 +13,12 @@ function sliceBuffer(buffer, start, end){
 function displayFileListScreen(){
   document.querySelector('.join-screen').classList.remove('active')
   document.querySelector('.fs-screen').classList.add('active')
+}
+function displayRoomId(roomId){
+  document.querySelector('#join-id').innerHTML = `
+    <b>Room ID</b>
+    <span>${roomId}</span>
+  `
 }
 function displayRoomInformation(roomInfo){
   const roomTitle = document.querySelector('.title') 

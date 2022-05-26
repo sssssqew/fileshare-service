@@ -2,16 +2,13 @@
   let roomID
   const socket = io()
 
-  document.querySelector('#receiver-start-con-btn').addEventListener('click', function(){
+  document.querySelector('#receiver-join-btn').addEventListener('click', function(){
     roomID = document.querySelector('#join-id').value
     if(roomID.length === 0) return 
 
-    let joinID = generateRoomID() 
+    const joinID = generateRoomID() 
 
-    socket.emit('receiver-join', { // 2. 소켓에 receiver ID 등록
-      uid: joinID,
-      roomID
-    })
+    socket.emit('receiver-join', { joinID, roomID }) // 2. 소켓에 receiver ID 등록
     displayFileListScreen()
   })
   socket.on('receive-roomInfo', function(roomInfo){
@@ -47,7 +44,7 @@
     sharedFiles[fileId].progressNode.innerText = progress
     sharedFiles[fileId].progressbarNode.style.width = progress
 
-    if(isFileTransfferDone(sharedFiles[fileId])){ // 송신자로부터 수신자에게 파일 데이터 전송이 완료된 경우
+    if(sharedFiles[fileId].transmited == sharedFiles[fileId].metadata.fileSize){ // 송신자로부터 수신자에게 파일 데이터 전송이 완료된 경우
       download(new Blob(sharedFiles[fileId].buffer), sharedFiles[fileId].metadata.fileName) // 파일 다운로드 실행
       sharedFiles[fileId] = {} // 해당 파일정보 초기화하기 
     }else{
