@@ -1,3 +1,5 @@
+window.viewType = 'table_view'
+
 // helper functions
 function generateRandomNumber(n){
   return Math.trunc(Math.random()*n)
@@ -43,6 +45,7 @@ function displayRoomId(roomId){
 }
 function toggleView(e, roomInfo){
     const viewType = e.target.innerText === 'table_view' ? 'list_alt' : 'table_view'
+    window.viewType = e.target.innerText === 'table_view' ? 'table_view' : 'list_alt'
     displayRoomInformation(roomInfo, viewType)
 
     const filesList = document.querySelector('.files-list')
@@ -72,15 +75,29 @@ function displayRoomInformation(roomInfo, viewType){
 }
 function displayFileshareInfo(filename, transferType){
   const el = document.createElement('div') 
-  el.classList.add('item')
-  el.innerHTML = `
-    <i class="material-icons ${transferType}">${transferType}</i>
-    <div class="progress">0%</div>
-    <div class="progress-bar">
-      <div class="bar"></div>
-    </div>
-    <div class="filename">${filename}</div>
-  `
+  
+  if(window.viewType === 'table_view'){
+    el.classList.add('item')
+    el.innerHTML = `
+      <i class="material-icons ${transferType}">${transferType}</i>
+      <div class="progress">0%</div>
+      <div class="progress-bar">
+        <div class="bar"></div>
+      </div>
+      <div class="filename">${filename}</div>
+    `
+  }else if(window.viewType === 'list_alt'){
+    el.classList.add('item', 'active')
+    el.innerHTML = `
+      <i class="material-icons ${transferType} active">${transferType}</i>
+      <div class="progress active">0%</div>
+      <div class="progress-bar active">
+        <div class="bar"></div>
+      </div>
+      <div class="filename active">${filename}</div>
+    `
+  }
+  
   document.querySelector('.files-list').appendChild(el)
   return { progressNode: el.querySelector('.progress'), progressbarNode: el.querySelector('.progress-bar .bar') }
 }

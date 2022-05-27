@@ -110,7 +110,7 @@ body{
   justify-content: space-between;
   flex-wrap: wrap;
   overflow: auto;
-  max-height: 80vh;
+  max-height: 70vh;
 }
 .files-list.active{
   flex-direction: column;
