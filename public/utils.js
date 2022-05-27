@@ -45,10 +45,12 @@ function displayRoomInformation(roomInfo){
   const roomTitle = document.querySelector('.title') 
   roomTitle.innerText = `Room: ${roomInfo['roomName']} (${roomInfo['roomID']})` 
 }
-function displayFileshareInfo(filename){
+function displayFileshareInfo(filename, type){
   const el = document.createElement('div') 
   el.classList.add('item')
   el.innerHTML = `
+    ${type === 'send' ? '<i class="material-icons send">send</i>' : ''}
+    ${type === 'received' ? '<i class="material-icons">download</i>' : ''}
     <div class="progress">0%</div>
     <div class="progress-bar">
       <div class="bar"></div>
@@ -68,7 +70,7 @@ function updateProgress(transmited, totalSize, progressNode, progressbarNode){
 function fetchFile(reader, file, shareFile){
   const buffer = new Uint8Array(reader.result) // 0~255 사이의 숫자를 요소로 가지는 배열
   console.log(buffer)
-  const progressNodes = displayFileshareInfo(file.name)
+  const progressNodes = displayFileshareInfo(file.name, 'send')
 
   shareFile({
     fileId: uuidv4(), // File ID (UUID)

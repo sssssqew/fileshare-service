@@ -54,7 +54,7 @@
     console.log('전달받은 파일 메타데이터', metadata)
 
     const { fileId, fileName } = metadata
-    const { progressNode, progressbarNode } = displayFileshareInfo(fileName)
+    const { progressNode, progressbarNode } = displayFileshareInfo(fileName, 'received')
     sharedFiles[fileId] = initializeFileInfo(metadata, progressNode, progressbarNode)
     
     socket.emit('fs-start', { roomID: roomInfo['roomID'] }) // 6. receiver 에게 파일 청크 요청하기
