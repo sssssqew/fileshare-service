@@ -68,10 +68,10 @@ function toggleView(e, roomInfo){
 function displayRoomInformation(roomInfo, viewType){
   const roomTitle = document.querySelector('.title') 
   roomTitle.innerHTML = `
-    <span>Room: ${roomInfo['roomName']} (${roomInfo['roomID']})</span>
-    <i class="material-icons ${viewType}">${viewType}</i>
+    <span><i class="material-icons">chalet</i> ${roomInfo['roomName']} (${roomInfo['roomID']})</span>
+    <i class="material-icons view-type ${viewType}">${viewType}</i>
   ` 
-  roomTitle.querySelector('.material-icons').addEventListener('click', (e) => toggleView(e, roomInfo))
+  roomTitle.querySelector('.view-type').addEventListener('click', (e) => toggleView(e, roomInfo))
 }
 function buildFileItem(viewType, transferType, filename){
   const el = document.createElement('div') 

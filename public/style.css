@@ -41,7 +41,12 @@ body{
   color: #222;
   margin-bottom: 20px;
 }
+.join-screen .form h1 .material-icons{
+  font-size: 37px;
+  vertical-align: middle;
+}
 .join-screen .form button{
+  display: block;
   background: #111;
   padding: 10px 20px;
   font-size: 18px;
@@ -71,7 +76,7 @@ body{
   color: #222;
 }
 .room-name{
-  display: block;
+  display: inline-block;
   margin: 10px 0;
   width: 100%;
   max-width: 200px;
@@ -137,6 +142,15 @@ body{
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.fs-screen .title span{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.fs-screen .title span .material-icons{
+  margin-right: 10px;
+  cursor: unset;
 }
 .fs-screen .title .material-icons{
   font-size: 36px;
