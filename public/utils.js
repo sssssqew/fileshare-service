@@ -41,16 +41,40 @@ function displayRoomId(roomId){
     <span>${roomId}</span>
   `
 }
-function displayRoomInformation(roomInfo){
-  const roomTitle = document.querySelector('.title') 
-  roomTitle.innerText = `Room: ${roomInfo['roomName']} (${roomInfo['roomID']})` 
+function toggleView(e, roomInfo){
+    const viewType = e.target.innerText === 'table_view' ? 'list_alt' : 'table_view'
+    displayRoomInformation(roomInfo, viewType)
+
+    const filesList = document.querySelector('.files-list')
+    filesList.classList.toggle('active')
+
+    const items = filesList.querySelectorAll('.files-list .item')
+    for(let item of items){
+      const progress = item.querySelector('.progress')
+      const progressbar = item.querySelector('.progress-bar')
+      const icon = item.querySelector('.material-icons')
+      const filename = item.querySelector('.filename')
+
+      item.classList.toggle('active')
+      progress.classList.toggle('active')
+      progressbar.classList.toggle('active')
+      icon.classList.toggle('active')
+      filename.classList.toggle('active')
+    }
 }
-function displayFileshareInfo(filename, type){
+function displayRoomInformation(roomInfo, viewType){
+  const roomTitle = document.querySelector('.title') 
+  roomTitle.innerHTML = `
+    <span>Room: ${roomInfo['roomName']} (${roomInfo['roomID']})</span>
+    <i class="material-icons ${viewType}">${viewType}</i>
+  ` 
+  roomTitle.querySelector('.material-icons').addEventListener('click', (e) => toggleView(e, roomInfo))
+}
+function displayFileshareInfo(filename, transferType){
   const el = document.createElement('div') 
   el.classList.add('item')
   el.innerHTML = `
-    ${type === 'send' ? '<i class="material-icons send">send</i>' : ''}
-    ${type === 'received' ? '<i class="material-icons">download</i>' : ''}
+    <i class="material-icons ${transferType}">${transferType}</i>
     <div class="progress">0%</div>
     <div class="progress-bar">
       <div class="bar"></div>

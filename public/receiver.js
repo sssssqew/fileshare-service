@@ -20,7 +20,7 @@
   })
   socket.on('receive-roomInfo', function(roomInfoReceived){
     roomInfo = roomInfoReceived // 파일을 전송하기 위하여 roomInfo 저장
-    displayRoomInformation(roomInfo)
+    displayRoomInformation(roomInfo, 'list_alt')
   })
 
   // TODO : 파일 송신부 작성하기 
@@ -58,7 +58,7 @@
     console.log('전달받은 파일 메타데이터', metadata)
 
     const { fileId, fileName } = metadata
-    const { progressNode, progressbarNode } = displayFileshareInfo(fileName, 'received')
+    const { progressNode, progressbarNode } = displayFileshareInfo(fileName, 'download')
     sharedFiles[fileId] = initializeFileInfo(metadata, progressNode, progressbarNode)
     
     socket.emit('fs-start', { roomID }) // 6. sender 에게 파일 청크 요청하기

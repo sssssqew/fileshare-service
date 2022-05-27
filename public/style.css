@@ -112,6 +112,10 @@ body{
   overflow: auto;
   max-height: 80vh;
 }
+.files-list.active{
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
 .fs-screen .files-list::-webkit-scrollbar {
   width: 0px;  /* 스크롤바의 너비 */
 }
@@ -130,8 +134,15 @@ body{
   font-size: 18px;
   color: #555;
   margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.fs-screen .files-list .item{
+.fs-screen .title .material-icons{
+  font-size: 36px;
+  cursor: pointer;
+}
+.fs-screen .files-list .item  {
   width: 33.33%;
   min-width: 200px;
   margin-bottom: 15px;
@@ -139,11 +150,19 @@ body{
   box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.05);
   position: relative;
 }
+.files-list .item.active{
+  width: 100%;
+}
 .fs-screen .files-list .item .material-icons{
   position: absolute;
   left: 15px;
   top: 15px;
   color: orange;
+}
+.files-list .item .material-icons.active{
+  left: 10px;
+  bottom: 5px;
+  top: unset; /* 기존 top 스타일 제거 */
 }
 .fs-screen .files-list .item .progress{
   padding: 30px;
@@ -153,11 +172,21 @@ body{
   color: rgba(10, 10, 10, 0.8);
   font-weight: bold;
 }
+.files-list .item .progress.active{
+  position: absolute;
+  right: 10px;
+  bottom: 0px;
+  font-size: 20px;
+  padding: 0px;
+}
 .fs-screen .files-list .item .progress-bar{
   margin: 0px 10px;
   height: 10px;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.05);
+}
+.files-list .item .progress-bar.active{
+  margin: 10px 10px;
 }
 .fs-screen .files-list .item .progress-bar .bar{
   width: 0%;
@@ -170,8 +199,11 @@ body{
   padding: 5px;
   border-top: 1px solid #eee;
   margin-top: 10px;
-  padding-left: 5px;
+  padding-left: 10px;
   color: rgba(0, 0, 0, 0.8);
+}
+.files-list .item .filename.active{
+  padding-left: 35px;
 }
 .home-container{
   display: flex;
@@ -210,4 +242,33 @@ body{
 .select-btns a:hover{
   background: rgba(255, 255, 255, .5);
   box-shadow: 0px 3px 5px rgba(0, 0, 0, .2);
+}
+
+@media screen and (max-width: 420px) { /* 모바일 */ 
+  .fs-screen .files-list{
+    max-height: 62vh;
+  }
+  .fs-screen .files-list .item {
+    width: 48%;
+    min-width: unset;
+  }
+  .files-list .item.active {
+    width: 100%;
+  }
+  .files-list .item .filename.active {
+    font-size: 14px;
+  }
+  .files-list .item .material-icons.active {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 300px) { /* 갤럭시 폴드 */
+  .fs-screen .files-list{
+    flex-wrap: unset;
+    flex-direction: column;
+    max-height: 58vh;
+  }
+  .fs-screen .files-list .item {
+    width: 100%;
+  }
 }

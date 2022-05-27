@@ -12,7 +12,7 @@
     
     roomName.classList.add('hide')
     displayRoomId(roomInfo.roomID)
-    displayRoomInformation(roomInfo)
+    displayRoomInformation(roomInfo, 'list_alt')
     socket.emit('sender-join', { roomInfo }) // 1. 소켓에 sender ID 등록
   })
   socket.on('init', function(joinID){ // 3. receiver ID 저장 및 파일 업로드 화면 보여주기
@@ -54,7 +54,7 @@
     console.log('전달받은 파일 메타데이터', metadata)
 
     const { fileId, fileName } = metadata
-    const { progressNode, progressbarNode } = displayFileshareInfo(fileName, 'received')
+    const { progressNode, progressbarNode } = displayFileshareInfo(fileName, 'download')
     sharedFiles[fileId] = initializeFileInfo(metadata, progressNode, progressbarNode)
     
     socket.emit('fs-start', { roomID: roomInfo['roomID'] }) // 6. receiver 에게 파일 청크 요청하기
