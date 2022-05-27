@@ -1,6 +1,6 @@
 {
   "name": "fileshare",
-  "version": "2.1.0",
+  "version": "3.1.0",
   "description": "share multiple files to multiple users in multiple rooms",
   "main": "index.js",
   "scripts": {
