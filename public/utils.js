@@ -1,4 +1,4 @@
-window.viewType = 'table_view'
+window.viewType = 'table_view' // 사용자가 선택한 view type 을 기억했다가 파일을 새로 업로드할때 view type 에 따라 아이템을 다르게 생성함
 
 // helper functions
 function generateRandomNumber(n){
@@ -73,33 +73,24 @@ function displayRoomInformation(roomInfo, viewType){
   ` 
   roomTitle.querySelector('.material-icons').addEventListener('click', (e) => toggleView(e, roomInfo))
 }
-function displayFileshareInfo(filename, transferType){
+function buildFileItem(viewType, transferType, filename){
   const el = document.createElement('div') 
-  
-  if(window.viewType === 'table_view'){
-    el.classList.add('item')
-    el.innerHTML = `
-      <i class="material-icons ${transferType}">${transferType}</i>
-      <div class="progress">0%</div>
-      <div class="progress-bar">
-        <div class="bar"></div>
-      </div>
-      <div class="filename">${filename}</div>
-    `
-  }else if(window.viewType === 'list_alt'){
-    el.classList.add('item', 'active')
-    el.innerHTML = `
-      <i class="material-icons ${transferType} active">${transferType}</i>
-      <div class="progress active">0%</div>
-      <div class="progress-bar active">
-        <div class="bar"></div>
-      </div>
-      <div class="filename active">${filename}</div>
-    `
-  }
-  
-  document.querySelector('.files-list').appendChild(el)
-  return { progressNode: el.querySelector('.progress'), progressbarNode: el.querySelector('.progress-bar .bar') }
+  const checkViewType = viewType === 'list_alt'
+  el.className = checkViewType ? 'item active' : 'item'
+  el.innerHTML = `
+    <i class="material-icons ${transferType} ${checkViewType && 'active'}">${transferType}</i>
+    <div class="progress ${checkViewType && 'active'}">0%</div>
+    <div class="progress-bar ${checkViewType && 'active'}">
+      <div class="bar"></div>
+    </div>
+    <div class="filename ${checkViewType && 'active'}">${filename}</div>
+  `
+  return el 
+}
+function displayFileshareInfo(filename, transferType){
+  const fileItem = buildFileItem(window.viewType, transferType, filename)
+  document.querySelector('.files-list').appendChild(fileItem)
+  return { progressNode: fileItem.querySelector('.progress'), progressbarNode: fileItem.querySelector('.progress-bar .bar') }
 }
 function updateProgress(transmited, totalSize, progressNode, progressbarNode){
   const progress = Math.trunc(transmited / totalSize * 100) + '%'
