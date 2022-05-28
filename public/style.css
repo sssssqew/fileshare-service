@@ -150,7 +150,7 @@ body{
 }
 .fs-screen .title span .material-icons{
   margin-right: 10px;
-  cursor: unset;
+  cursor: pointer;
 }
 .fs-screen .title .material-icons{
   font-size: 36px;

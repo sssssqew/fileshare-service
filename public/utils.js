@@ -60,7 +60,7 @@ function toggleView(e, roomInfo){ // e.target.innerText : 변경하고자 하는
 function displayRoomInformation(roomInfo, viewType){
   const roomTitle = document.querySelector('.title') 
   roomTitle.innerHTML = `
-    <span><i class="material-icons">chalet</i> ${roomInfo['roomName']} (${roomInfo['roomID']})</span>
+    <span><i class="material-icons">group</i> ${roomInfo['roomName']} (${roomInfo['roomID']})</span>
     <i class="material-icons view-type ${viewType}">${viewType}</i>
   ` 
   roomTitle.querySelector('.view-type').addEventListener('click', (e) => toggleView(e, roomInfo))
