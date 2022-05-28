@@ -1,5 +1,3 @@
-window.viewType = 'table_view' // 사용자가 선택한 view type 을 기억했다가 파일을 새로 업로드할때 view type 에 따라 아이템을 다르게 생성함
-
 // helper functions
 function generateRandomNumber(n){
   return Math.trunc(Math.random()*n)
@@ -43,9 +41,8 @@ function displayRoomId(roomId){
     <span>${roomId}</span>
   `
 }
-function toggleView(e, roomInfo){
-    const viewType = e.target.innerText === 'table_view' ? 'list_alt' : 'table_view'
-    window.viewType = e.target.innerText === 'table_view' ? 'table_view' : 'list_alt'
+function toggleView(e, roomInfo){ // e.target.innerText : 변경하고자 하는 뷰 타입
+    const viewType = e.target.innerText === 'list_alt' ? 'table_view' : 'list_alt'
     displayRoomInformation(roomInfo, viewType)
 
     const filesList = document.querySelector('.files-list')
@@ -53,16 +50,11 @@ function toggleView(e, roomInfo){
 
     const items = filesList.querySelectorAll('.files-list .item')
     for(let item of items){
-      const progress = item.querySelector('.progress')
-      const progressbar = item.querySelector('.progress-bar')
-      const icon = item.querySelector('.material-icons')
-      const filename = item.querySelector('.filename')
-
       item.classList.toggle('active')
-      progress.classList.toggle('active')
-      progressbar.classList.toggle('active')
-      icon.classList.toggle('active')
-      filename.classList.toggle('active')
+      item.querySelector('.progress').classList.toggle('active')
+      item.querySelector('.progress-bar').classList.toggle('active')
+      item.querySelector('.material-icons').classList.toggle('active')
+      item.querySelector('.filename').classList.toggle('active')
     }
 }
 function displayRoomInformation(roomInfo, viewType){
@@ -73,9 +65,11 @@ function displayRoomInformation(roomInfo, viewType){
   ` 
   roomTitle.querySelector('.view-type').addEventListener('click', (e) => toggleView(e, roomInfo))
 }
-function buildFileItem(viewType, transferType, filename){
-  const el = document.createElement('div') 
+function buildFileItem(transferType, filename){
+  const viewType = document.querySelector('.title .view-type').innerText === 'list_alt' ? 'table_view' : 'list_alt'
   const checkViewType = viewType === 'list_alt'
+  
+  const el = document.createElement('div') 
   el.className = checkViewType ? 'item active' : 'item'
   el.innerHTML = `
     <i class="material-icons ${transferType} ${checkViewType && 'active'}">${transferType}</i>
@@ -88,7 +82,7 @@ function buildFileItem(viewType, transferType, filename){
   return el 
 }
 function displayFileshareInfo(filename, transferType){
-  const fileItem = buildFileItem(window.viewType, transferType, filename)
+  const fileItem = buildFileItem(transferType, filename)
   document.querySelector('.files-list').appendChild(fileItem)
   return { progressNode: fileItem.querySelector('.progress'), progressbarNode: fileItem.querySelector('.progress-bar .bar') }
 }
